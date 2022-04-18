@@ -1,0 +1,79 @@
+HW_1 Terminal (Валерия @valeriyaler)
+1) Посмотреть где я:
+	pwd
+2) Создать папку:
+	mkdir foldername
+3) Зайти в папку 
+	cd foldername
+4) Создать 3 папки
+	mkdir foldername1 foldername2 foldername3
+5) Зайти в любую папку
+	cd foldername1 
+6) Создать 5 файлов (3 txt, 2 json)
+	touch file1.txt file2.txt file3.txt 
+	touch file4.json file5.json
+7) Создать 3 папки 
+	mkdir folder4 folder5 folder6
+8) Вывести список содержимого папки 
+	ls -la
+9) Открыть любой txt файл
+	cat >> 	file1.txtf
+10) Написать туда что-нибудь, любой текст 
+	random text
+	it's random
+	text
+11) Сохранить и выйти 
+	ctrl + c
+
+or 
+9) Открыть любой txt файл
+	vim file2.txt
+10) Написать туда что-нибудь, любой текст 
+	i
+	random text
+	it's random
+	text
+11) Сохранить и выйти 
+	escape
+	:wq
+12) Выйти из папки на уровень выше
+	cd ..
+13) Переместить любые 2 файла, которые вы создали, в любую другую папку
+	mv foldername1/{file2.txt,file4.json} foldername1/folder5/
+14) Скопировать любые 2 файла, которые вы создали, в любую другую папку
+	cp foldername1/{file3.txt,file5.json} foldername1/folder6/
+15) Найти файл по имени
+	find . -name file1.txt
+16) Просмотреть содержимое в реальном времени 
+	tail -f file1.txt
+17) Вывести несколько первых строк из текстового файла 
+	head -n 5 file1.txt
+18) Вывести несколько последних строк из текстового файла 
+	tail -n 5 file1.txt
+19) Просмотреть содержимое длинного файла
+	less +F file1.txt
+20) Вывести дату и время
+	date
+or 
+	date +%c
+
+Extra*
+1) Отправить http запрос на сервер.
+http://162.55.220.72:5005/terminal-hw-request
+	curl http://162.55.220.72:5005/terminal-hw-request
+2) Написать скрипт который выполнит автоматически пункты 3, 4, 5, 6, 7, 8, 13
+	vim script.sh
+		i
+		Скрипт:
+		#!/bin/bash
+		cd foldername
+		mkdir extrafolder1 extrafolder2 extrafolder3
+		cd extrafolder1
+		touch file1.txt file2.txt file3.txt file4.json file5.json
+		mkdir folderextra4 extrafolder5 extrafolder6
+		ls -la
+		mv {file2.txt,file4.json} folderextra4/
+		escape
+		:wq
+	chmod +x ./script.sh
+	./script.sh
