@@ -1,0 +1,1 @@
+a == 0 ? console.log('No such enterprise') : false
