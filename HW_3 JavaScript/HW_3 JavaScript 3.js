@@ -71,6 +71,47 @@ const enterprises = [
 //   Предприятие 3 (нет сотрудников)
 //   - Отдел аналитики (нет сотрудников)
 
+//Helpers
+const phraseEndings = function(amount, name) {      //расставить окончания
+  let nameString = ''
+  if (amount == 0) {
+    nameString = 'нет ' + name + 'ов' 
+  } else if (amount % 10 == 1 && amount != 11) {
+    nameString = amount + ' ' + name
+  } else if (amount % 10 == 2 || amount % 10 == 3 || amount % 10 == 4 ) {
+    nameString = amount + ' ' + name + 'а'
+  } else {
+    nameString = amount + ' ' + name + 'ов'
+  }
+return nameString
+}
+
+const findDepartment = function(departNumber) {     //найти предприятие по номеру департамента
+  let arrayRes //= []
+  let counter = 0
+  enterprises.forEach((item, index) => {
+    if (item.departments) {
+      item.departments.forEach((dep, id) => {
+        if (+departNumber) {
+          if (dep.id == departNumber) {
+            counter++
+            arrayRes = item       
+          } 
+        } else {
+          if (dep.name == departNumber) {
+            counter++
+            arrayRes = item  
+        } 
+        }
+      })
+    }
+  }  )
+  counter == 0 ? console.log('No such enterprise') : false
+  return arrayRes
+  }
+  // let a = findDepartment(10)
+  // console.log(a, a.id)
+  // console.log(a[0].id)
 // Version 1
 // const personCard = function(enterprises) {
 //     enterprises.forEach((item) => {
@@ -82,7 +123,7 @@ const enterprises = [
 //             employeeInfo.push('- ' + elem.name + ' ('+ elem.employees_count + ' сотрудников)'+ '\n')
 //         })
 //     console.log(item.name + ' (' + employeeSum + ' сотрудников)')    
-//     console.log(String(employeeInfo.join('')))
+//     console.log(employeeInfo.join(''))
 //       }
 //   })
 
@@ -99,10 +140,10 @@ const personCards = function(enterprises) {
           item.departments.forEach(dept => {
             ar.push(dept.employees_count)
             res = ar.reduce((sum, curr) => sum + curr, 0);
-            return a.push('- ' + dept.name + ' (' + dept.employees_count + ' сотрудников)'+ '\n') 
+            return a.push('- ' + dept.name + ' (' + phraseEndings(dept.employees_count, 'сотрудник') + ')' + '\n') 
             })
-          console.log(item.name + ' (' + res + ' сотрудников)')
-          console.log(String(a.join('')))
+          console.log(item.name + ' (' + phraseEndings(res, 'сотрудник') +')')
+          console.log(a.join(''))
           }
       })
     }
@@ -116,31 +157,32 @@ const personCards = function(enterprises) {
 
 const getEnterpriseName = function(searchId) {
   let arrayy = []
+  let counter = 0
   enterprises.forEach((item, index) => {
     if (item.departments) {
-      let findUser = []
-      let a = 0
       item.departments.forEach((dep, id) => {
         if (+searchId) {
-            findUser = item.departments.filter(element => dep.id == searchId )
-            findUser.length != 0 ? a++ : false
+          if (dep.id == searchId) {
+            console.log(item.name) 
+            counter++
+          } 
         } else {
-            findUser = item.departments.filter(element => dep.name == searchId )
-            findUser.length != 0 ? a++ : false
+          if (dep.name == searchId) {
+            console.log(item.name)
+            counter++
+        } 
         }
-        }
-      )
-      a != 0 ? arrayy.push(item.name + '\n') : false
+      })
     }
   }  )
-  arrayy.length == 0 ? console.log('No such enterprise') : console.log(String(arrayy.join('')))
+  counter == 0 ? console.log('No such enterprise') : false
 }  
 getEnterpriseName("Отдел маркетинга")
 getEnterpriseName(10)
 getEnterpriseName(111)
 
-//   3. Написать функцию, которая будет добавлять предприятие. В качестве аргумента принимает название предприятия
-//   Пример:  addEnterprise("Название нового предприятия")
+  3. Написать функцию, которая будет добавлять предприятие. В качестве аргумента принимает название предприятия
+  Пример:  addEnterprise("Название нового предприятия")
 const addEnterprise = function(enterpriseName) {
     let ar = [] 
     let res
@@ -244,8 +286,8 @@ deleteEnterprise(5)
 deleteEnterprise('1')
 // console.log(enterprises) 
 
-//   8. Написать функцию для удаления отдела. В качестве аргумента принимает id отдела. Удалить отдел можно только, если в нем нет сотрудников.
-//   Пример: deleteDepartment(3)
+// //   8. Написать функцию для удаления отдела. В качестве аргумента принимает id отдела. Удалить отдел можно только, если в нем нет сотрудников.
+// //   Пример: deleteDepartment(3)
 const deleteDepartment = function(departmentNumber) {
 if (!isNaN(+departmentNumber)) {
   let a = 0
@@ -269,8 +311,39 @@ deleteDepartment('sss')
 deleteDepartment(25)
 console.log(JSON.stringify(enterprises, null, 4))
   
-//   9. Написать функцию для переноса сотрудников между отделами одного предприятия. 
-// В качестве аргумента принимает два значения: id отдела, из которого будут переноситься сотрудники и id отдела, в который будут переноситься сотрудники).
-//   Пример: moveEmployees(2, 3)
+// //   9. Написать функцию для переноса сотрудников между отделами одного предприятия. 
+// // В качестве аргумента принимает два значения: id отдела, из которого будут переноситься сотрудники и id отдела, в который будут переноситься сотрудники).
+// //   Пример: moveEmployees(2, 3)
 
+const moveEmployees = function(departFrom, departWhere) {
+  let enterpFrom
+  let enterpWhere
+  let employSum = 0
+  if (!isNaN(+departFrom) || !isNaN(+departWhere)) {
+      enterpFrom = findDepartment(departFrom)
+      enterpWhere = findDepartment(departWhere)
+      if (!enterpFrom) {
+        console.log('No such department to transfer from')
+      } else if (!enterpWhere) {
+        console.log('No such department to transfer to')
+      } else if (enterpFrom.id !== enterpWhere.id) {
+        console.log('You wrote different enterprises')
+      } else {
+        enterpFrom.departments.forEach((dep) => {
+          if (dep.id == departFrom) {
+            employSum = dep.employees_count
+            dep.employees_count = 0
+          }
+          if (dep.id == departWhere) {
+            console.log(dep.id)
+            dep.employees_count += employSum
+          }
+        })
+      }
+    } else {console.log('Department ID is not a number')}
+  
+}  
+moveEmployees(7, 8)
+// console.log(enterprises)
+// moveEmployees(7, 10)
 
